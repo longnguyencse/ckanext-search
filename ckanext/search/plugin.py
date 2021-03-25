@@ -11,4 +11,14 @@ class SearchPlugin(plugins.SingletonPlugin):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
         toolkit.add_resource('fanstatic',
-            'search')
+                             'search')
+
+    def update_config_schema(self, schema):
+        ignore_missing = toolkit.get_validator('ignore_missing')
+        is_positive_integer = toolkit.get_validator('is_positive_integer')
+
+        schema.update({
+            'ckan.datasets_per_page': [ignore_missing, is_positive_integer],
+            'ckanext.search.test_config': [ignore_missing, is_positive_integer]
+        })
+        return schema
